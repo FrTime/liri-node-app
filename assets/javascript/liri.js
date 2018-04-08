@@ -1,4 +1,5 @@
 // Linking the keys.js file and setting the packet requirements
+
 require("dotenv").config();
 var keys = require("./keys.js");
 var Twitter = require("twitter");
@@ -6,12 +7,15 @@ var Spotify = require("node-spotify-api");
 var request = require("request");
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
+var fs = require("fs");
 
 // Storing the argument array and user-entered command as variables
+
 var pArgv = process.argv;
 var command = process.argv[2];
 
 // Storing the search term(s) as a variable
+
 var searchParam = "";
 for (i = 3; i < pArgv.length; i++) {
   if (i > 3 && i < pArgv.length) {
@@ -23,20 +27,50 @@ for (i = 3; i < pArgv.length; i++) {
 
 // Defining functions for entered commands
 
+function doWhatItSays() {
+  // Turns text from selected file into an array by splitting at every "," found.
+  // Expected format: command,searchParam
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    var randomArr = data.split(",");
+    spotifyThisSong(randomArr[1]);
+  });
+}
+
+function myTweets() {
+  // Displays the 20 most recent tweets of the user
+  // User name is set below:
+  var userName = "Father_____Time";
+  client.get("statuses/user_timeline", userName, function(
+    error,
+    tweets,
+    response
+  ) {
+    if (error) throw error;
+    for (i = 0; i < tweets.length; i++) {
+      console.log(
+        `@${userName} tweeted "${tweets[i].text}" at ${tweets[i].created_at}.`
+      );
+      console.log("\n-------------------- \n");
+    }
+  });
+}
+
 // Setting actions depending on command entered
+
 switch (command) {
   case "my-tweets":
-    console.log("Pulling your 20 most recent Tweets...");
+    console.log("Pulling your 20 most recent Tweets...\n");
     myTweets();
     break;
 
   case "spotify-this-song":
     if (searchParam) {
-      console.log(`Searching Spotify for '${searchParam}'...`);
+      console.log(`Searching Spotify for '${searchParam}'...
+      `);
       spotifyThisSong(searchParam);
     } else {
       console.log(
-        "No search term(s) entered. We hope you enjoy our selection:"
+        "No search term(s) entered. We hope you enjoy our selection:\n"
       );
       spotifyThisSong("The Sign");
     }
@@ -44,11 +78,12 @@ switch (command) {
 
   case "movie-this":
     if (searchParam) {
-      console.log(`Searching IMDB for '${searchParam}'...`);
+      console.log(`Searching IMDB for '${searchParam}'...
+      `);
       movieThis(searchParam);
     } else {
       console.log(
-        "No search term(s) entered. We hope you enjoy our selection:"
+        "No search term(s) entered. We hope you enjoy our selection:\n"
       );
       movieThis("Mr. Nobody");
     }
@@ -58,6 +93,11 @@ switch (command) {
     doWhatItSays();
     break;
 
+  case "test":
+    console.log(`Testing... Your search term(s): ${searchParam}
+    `);
+    break;
+
   default:
-    console.log("Please enter a valid command.");
+    console.log("Please enter a valid command.\n");
 }
