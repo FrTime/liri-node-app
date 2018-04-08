@@ -26,21 +26,30 @@ for (i = 3; i < pArgv.length; i++) {
 // Setting actions depending on command entered
 switch (command) {
   case "my-tweets":
+    console.log("Pulling your 20 most recent Tweets...");
     myTweets();
     break;
 
   case "spotify-this-song":
     if (searchParam) {
+      console.log(`Searching Spotify for '${searchParam}'...`);
       spotifyThisSong(searchParam);
     } else {
+      console.log(
+        "No search term(s) entered. We hope you enjoy our selection:"
+      );
       spotifyThisSong("The Sign");
     }
     break;
 
   case "movie-this":
     if (searchParam) {
+      console.log(`Searching IMDB for '${searchParam}'...`);
       movieThis(searchParam);
     } else {
+      console.log(
+        "No search term(s) entered. We hope you enjoy our selection:"
+      );
       movieThis("Mr. Nobody");
     }
     break;
@@ -51,4 +60,4 @@ switch (command) {
 
   default:
     console.log("Please enter a valid command.");
-};
+}
