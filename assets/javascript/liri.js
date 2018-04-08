@@ -23,18 +23,18 @@ for (i = 3; i < pArgv.length; i++) {
   } else {
     searchParam = searchParam + pArgv[i];
   }
-};
+}
 
 // Defining functions for entered commands
 
 function doWhatItSays() {
-  // Turns text from selected file into an array by splitting at every "," found.
+  // Turns text from selected file into an array by splitting at every "," found
   // Expected format: command,searchParam
   fs.readFile("random.txt", "utf8", function(error, data) {
     var randomArr = data.split(",");
     spotifyThisSong(randomArr[1]);
   });
-};
+}
 
 function myTweets() {
   // Displays the 20 most recent tweets of the user
@@ -53,10 +53,10 @@ function myTweets() {
       console.log("\n-------------------- \n");
     }
   });
-};
+}
 
 function spotifyThisSong(title) {
-  // Displays the closest result to the entered search terms
+  // Displays the closest result to the entered search terms (song title)
   // If nothing is entered, "The Sign" by Ace of Bass is searched for instead
   spotify.search({ type: "track", query: title, limit: 1 }, function(
     error,
@@ -74,9 +74,34 @@ function spotifyThisSong(title) {
       );
     }
   });
-};
+}
 
-// Setting actions depending on command entered
+function movieThis(title) {
+  // Displays the closest result to the entered search terms (movie title)
+  // If nothing is entered, "Mr. Nobody" is searched for instead
+  var URL =
+    "http://www.omdbapi.com/?apikey=trilogy&t=" +
+    title +
+    "&plot=short&tomatoes=true";
+
+  request(URL, function(error, response, body) {
+    if (error) throw error;
+    else if (!error && response.statusCode == 200) {
+      var movie = JSON.parse(body);
+      console.log(
+        `Title: ${movie.Title} \nYear Released: ${movie.Year} \nIMDB Rating: ${
+          movie.imdbRating
+        } \nRotten Tomatoes Rating: ${
+          movie.tomatoRating
+        } \nCountry of Origin: ${movie.Country} \nLanguage: ${
+          movie.Language
+        } \nPlot: ${movie.Plot} \nCast: ${movie.Actors}`
+      );
+    }
+  });
+}
+
+// Setting actions depending on which command is entered
 
 switch (command) {
   case "my-tweets":
@@ -108,9 +133,13 @@ switch (command) {
       );
       movieThis("Mr. Nobody");
     }
+    console.log(
+      "If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/ \nIt's on Netflix!\n"
+    );
     break;
 
   case "do-what-it-says":
+    console.log();
     doWhatItSays();
     break;
 
