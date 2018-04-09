@@ -132,10 +132,10 @@ switch (command) {
         "No search term(s) entered. We hope you enjoy our selection:\n"
       );
       movieThis("Mr. Nobody");
+      console.log(
+        "If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/ \nIt's on Netflix!\n"
+      );
     }
-    console.log(
-      "If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/ \nIt's on Netflix!\n"
-    );
     break;
 
   case "do-what-it-says":
