@@ -149,5 +149,5 @@ switch (command) {
     break;
 
   default:
-    console.log("Please enter a valid command.\n");
+    console.log("Please enter a valid command:\n\nmy-tweets\nspotify-this-song <title>\nmovie-this <title>\ndo-what-it-says\n");
 }
